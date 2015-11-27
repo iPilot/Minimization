@@ -1,7 +1,7 @@
 #include "functions.h"
 
-vector<__term> impl, core, ost;
-vector<set<__term>> terms, nterms;
+vector<term> impl, core, ost;
+vector<set<term>> terms, nterms;
 
 int main()
 {
@@ -19,7 +19,7 @@ int main()
 		for (int i = 0; i < sz(input); i++)
 			if (input[i] == '1')
 			{
-				__term tmp(i, n);
+				term tmp(i, n);
 				terms[tmp.group].insert(tmp);
 				impl.push_back(tmp);
 			}
@@ -37,7 +37,7 @@ int main()
 							if ((*j).cmp_delta(*k))
 							{
 								scl = f = true;
-								__term tmp(*j, *k);
+								term tmp(*j, *k);
 								nterms[tmp.group].insert(tmp);
 							}
 					if (i < sz(terms) - 1)
@@ -45,7 +45,7 @@ int main()
 							if ((*j).cmp_delta(*k))
 							{
 								scl = f = true;
-								__term tmp(*j, *k);
+								term tmp(*j, *k);
 								nterms[tmp.group].insert(tmp);
 							}
 					if (!scl) nterms[(*j).group].insert(*j);

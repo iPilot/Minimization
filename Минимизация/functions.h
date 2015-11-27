@@ -18,78 +18,78 @@ typedef long long ll;
 int **table, min_op = (int)1e9;
 vector<string> ans;
 
-class __term
+class term
 {
 	public: 
 		int num, operations, length, group;
-		string term, result;
+		string value, result;
 
-		bool operator==(const __term &right) const
+		bool operator==(const term &right) const
 		{
-			for (int i = 0; i < sz(term); i++)
-				if (term[i] != right.term[i] && term[i] != '*' && right.term[i] != '*') return false;
+			for (int i = 0; i < sz(value); i++)
+				if (value[i] != right.value[i] && value[i] != '*' && right.value[i] != '*') return false;
 			return true;
 		}
 
-		bool cmp_delta(const __term &right) const
+		bool cmp_delta(const term &right) const
 		{
 			int delta = 0;
 			if (length != right.length) return false;
 			for (int i = 0; i < length; i++)
 			{
-				if ((term[i] == '*') ^ (right.term[i] == '*')) return false;
-				if (term[i] != right.term[i]) delta++;
+				if ((value[i] == '*') ^ (right.value[i] == '*')) return false;
+				if (value[i] != right.value[i]) delta++;
 			}
 			return (delta == 1 && !((group > right.group) ^ (num > right.num)));
 		}
 
-		bool operator=(const __term &right)
+		bool operator=(const term &right)
 		{
 			length = right.length;
 			group = right.group;
 			num = right.num;
 			operations = right.operations;
-			term = right.term;
+			value = right.value;
 			result = right.result;
 			return true;
 		}
 
-		bool operator<(const __term &right) const
+		bool operator<(const term &right) const
 		{
 			return (result < right.result);
 		}
 
-		__term()
+		term()
 		{
 			length = 0;
 			group = 0;
-			term = "";
+			value = "";
 			result = "";
 			operations = 0;
 			num = 0;
 		}
 
-		__term(int _num, int _size)
+		term(int _num, int _size)
 		{
 			num = _num;
 			length = _size; 
-			term.resize(_size);
+			value.resize(_size);
 			operations = 0;
 			group = 0;
 			result = "";
 			for (int i = length - 1; i >= 0; i--, _num /= 2)
 			{
-				term[i] = _num % 2 + 48;
-				operations += (int)(term[i] == '0') + (int)(i > 0);
-				if (term[i] == '1') group++;
+				value[i] = _num % 2 + 48;
+				operations += (int)(value[i] == '0') + (int)(i > 0);
+				if (value[i] == '1') group++;
 			}
 			set_result();
 		}
 
-		__term(const __term &a, const __term &b)
+		term(const term &a, const term &b)
 		{
 			length = a.length;
-			term.resize(length);
+			value.resize(length);
 			result = "";
 			operations = 0;
 			num = 0;
@@ -97,19 +97,19 @@ class __term
 			int k = 1;
 			for (int i = a.length - 1; i >= 0; i--)
 			{
-				if (a.term[i] == b.term[i]) term[i] = a.term[i];
-				else term[i] = '*';
-				if (term[i] == '1') group++, num += k;
-				operations += (int)(term[i] == '0') + (int)(i > 0) - (int)(term[i] == '*');
-				if (term[i] != '*') k *= 2;
+				if (a.value[i] == b.value[i]) value[i] = a.value[i];
+				else value[i] = '*';
+				if (value[i] == '1') group++, num += k;
+				operations += (int)(value[i] == '0') + (int)(i > 0) - (int)(value[i] == '*');
+				if (value[i] != '*') k *= 2;
 			}
 			set_result();
 		}
 
-		__term(const __term &a)
+		term(const term &a)
 		{
 			length = a.length;
-			term = a.term;
+			value = a.value;
 			result = a.result;
 			num = a.num;
 			operations = a.operations;
@@ -122,13 +122,13 @@ class __term
 			result.clear();
 			for (int i = 0, j = 0; i < length; i++)
 			{
-				if (term[i] == '1') result += i + 65;
-				if (term[i] == '0') result += i + 97;
+				if (value[i] == '1') result += i + 65;
+				if (value[i] == '0') result += i + 97;
 			}
 		}
 };
 
-void printresult(const vector<__term> &h, const vector<__term> &w, string &r, int step, int r_op)
+void printresult(const vector<term> &h, const vector<term> &w, string &r, int step, int r_op)
 {
 	int x = 0;
 	step--;
@@ -198,7 +198,7 @@ bool check(string& s, int n, int k = 6)
 	return true;
 }
 
-bool term_cmp(const __term &a, const __term &b)
+bool term_cmp(const term &a, const term &b)
 {
 	return (a.operations < b.operations || a.operations == b.operations && a.result < b.result);
 }
