@@ -110,12 +110,10 @@ class __term
 		{
 			length = a.length;
 			term = a.term;
-			//for (int i = 0; i <	 length; i++) term[i] = a.term[i];
 			result = a.result;
 			num = a.num;
 			operations = a.operations;
 			group = a.group;
-			//set_result();
 		}
 
 	private:
@@ -139,17 +137,16 @@ void printresult(const vector<__term> &h, const vector<__term> &w, string &r, in
 	{
 		int y = 0;
 		while (table[y][x] == 0) y++;
-		int cur_min_op = h[y].operations;
 		for (; y < sz(h); y++)
 		{
-			if (table[y][x] == 1 /*&& h[y].operations == cur_min_op*/ && table[y][sz(w)] == 0)
+			if (table[y][x] == 1 && table[y][sz(w)] == 0)
 			{
 				for (int j = 0; j < sz(w); j++)
 					if (table[y][j] == 1 && table[sz(h) + 1][j] == 0) table[sz(h) + 1][j] = step;
 				table[y][sz(w)] = step;
-				string tmp = r;
-				tmp += " v ";
-				tmp += h[y].result;
+				string tmp;
+				if (r == "") tmp = h[y].result;
+				else tmp = r + " v " + h[y].result;
 				printresult(h, w, tmp, step, r_op + h[y].operations + 1);
 				for (int j = 0; j < sz(w); j++)
 					if (table[y][j] == 1 && table[sz(h) + 1][j] == step) table[sz(h) + 1][j] = 0;
@@ -165,10 +162,9 @@ void printresult(const vector<__term> &h, const vector<__term> &w, string &r, in
 			ans.clear();
 			min_op = r_op;
 			ans.push_back(r);
-			//cout << "ans cleared\n";
 		}
 		else
-			if (min_op == r_op)	ans.push_back(r);//, cout << "added to ans. size = " << sz(ans) << "\n";
+			if (min_op == r_op)	ans.push_back(r);
 	}
 }
 
